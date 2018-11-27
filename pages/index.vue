@@ -21,7 +21,7 @@
                 </Badge>
                 <Icon :size="18" type="md-arrow-dropdown"></Icon>
                 <DropdownMenu slot="list">
-                  <DropdownItem name="message">个人信息</DropdownItem>
+                  <DropdownItem name="user">个人信息</DropdownItem>
                   <DropdownItem name="message">消息中心
                     <Badge style="margin-left: 10px" :count="12"></Badge>
                   </DropdownItem>
@@ -64,6 +64,11 @@ export default {
           break
         case 'message':
           this.message()
+          break
+        case 'user':
+         this.$router.push({
+        path: '/user'
+      })
           break
       }
     }

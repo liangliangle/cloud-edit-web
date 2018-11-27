@@ -66,7 +66,7 @@ export default {
         update(this.current)
           .then(res => {
             this.init()
-            this.$Message.info('创建成功')
+            this.$Message.info('修改成功')
           })
           
       } else {
