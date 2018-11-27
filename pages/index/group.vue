@@ -62,9 +62,10 @@
     methods: {
       init() {
         var userId=1;
-        var user =JSON.parse(localStorage.getItem("user"));
+        var user=localStorage.getItem("user");
         if(user){
-          userId=user.id
+          var userJson =JSON.parse(user);
+          userId=userJson.id
         }
         getGroup(userId).then(res => {
           console.log(res);

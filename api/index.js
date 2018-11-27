@@ -7,7 +7,6 @@ axios.defaults.timeout = 10000
 axios.interceptors.request.use(
   config => {
     let token = localStorage.getItem("token");
-    console.log(token);
     if (token) {
       //从sessionStorage中加载用户menu信息
       config.headers.Authorization = token;
@@ -26,14 +25,15 @@ axios.interceptors.response.use(
   error => {
     console.log(error.response)
     if (error.response) {
-      if (error.response.status === 500) {
-        Notice.error({desc: error.response.data.message})
-      }
       if (error.response.status === 401) {
         // 授权失败， 登录失效或未登录
         // 清除用户与token信息
         localStorage.removeItem("token");
         location.replace("/login");
+      }else{
+        if (error.response.data) {
+          Notice.error({desc: error.response.data.message})
+        }
       }
     }
     return Promise.reject(error)

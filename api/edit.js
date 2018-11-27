@@ -30,14 +30,6 @@ export const update = data => {
 }
 
 
-export const putEdit = data => {
-  return axios.request({
-    url: 'edit/' + data.id,
-    data: data,
-    method: 'put'
-  })
-}
-
 
 
 
