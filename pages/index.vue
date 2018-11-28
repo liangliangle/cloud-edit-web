@@ -63,7 +63,7 @@ export default {
           this.logout()
           break
         case 'message':
-          this.message()
+         this.$router.push({path:'/message'})
           break
         case 'user':
          this.$router.push({

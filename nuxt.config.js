@@ -14,7 +14,14 @@ module.exports = {
     ]
   },
   dev: (process.env.NODE_ENV !== 'production'),
-  loading: {color: '#fff'},
+  loading: {color: '#fff'
+},
+loader:[
+  {
+      test:/\.less$/,
+      loaders:'style-loader!css-loader!less-loader'
+  }
+],
   css: [],
   plugins: [
     {src: '~plugins/iview', ssr: false},

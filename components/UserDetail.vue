@@ -1,25 +1,33 @@
 <template>
-  <Row :gutter="32">
-    <Col span="8" class="demo-tabs-style">
-      <Tabs type="card">
-        <TabPane label="个人信息">
-          <UserDetail />
-        </TabPane>
-        <TabPane label="安全">标签二的内容</TabPane>
-        <TabPane label="设置">标签三的内容</TabPane>
-      </Tabs>
-    </Col>
-  </Row>
-</template>
- 
+  <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+            <FormItem label="头像" prop="name">
+              <Avatar :src="formValidate.img"/>
+              <Upload>
+                <Button icon="ios-cloud-upload-outline" accept="image/*">上传头像</Button>
+              </Upload>
+            </FormItem>
+            <FormItem label="Name" prop="name">
+              <Input v-model="formValidate.name" placeholder="名称"/>
+            </FormItem>
+            <FormItem label="E-mail" prop="mail">
+              <Input v-model="formValidate.mail" placeholder="邮箱"/>
+            </FormItem>
+            <FormItem label="Gender" prop="gender">
+              <RadioGroup v-model="formValidate.gender">
+                <Radio label="male">男</Radio>
+                <Radio label="female">女</Radio>
+              </RadioGroup>
+            </FormItem>
+            <FormItem >
+              <Button style="float:right" type="primary" @click="handleSubmit('formValidate')">保存</Button>
+            </FormItem>
+          </Form>
 </template>
 <script>
-import UserDetail from '~/components/UserDetail.vue'
-export default {
-  components: {
-      UserDetail
-    },
-  data() {
+  import {login} from '~/api/login.js'
+
+  export default {
+   data() {
     return {
       formValidate: {
         name: '',
