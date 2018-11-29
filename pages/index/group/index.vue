@@ -9,7 +9,7 @@
             {{data.name}}
           </p>
           <div slot="extra">
-            <Button type="text" shape="circle" label="small" icon="md-create"></Button>
+            <Button type="text" shape="circle" label="small" icon="md-create"  @click="detail(data)"> </Button>
             <Button type="text" label="small" shape="circle" icon="ios-trash-outline"/>
 
           </div>
@@ -71,6 +71,9 @@
           console.log(res);
           this.list = res.data;
         });
+      },
+      detail(data) {
+         this.$router.push({path: "/group/" + data.id+"/detail"})
       },
       add() {
         this.current = {};
