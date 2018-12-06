@@ -2,48 +2,77 @@
   <Card shadow>
     <div>
       <div class="message-page-con message-category-con">
-        <Menu width="auto" active-name="unread" @on-select="handleSelect">
-          <MenuItem name="unread">
+        <Menu width="auto" active-name="detail" @on-select="handleSelect">
+          <MenuItem name="detail">
             <span class="category-title">小组详情</span>
-            <Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
           </MenuItem>
-          <MenuItem name="readed">
+          <MenuItem name="users">
             <span class="category-title">人员列表</span>
-            <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messageReadedCount"></Badge>
           </MenuItem>
-          <MenuItem name="trash">
+          <MenuItem name="setting">
             <span class="category-title">小组设置</span>
-            <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messageTrashCount"></Badge>
           </MenuItem>
         </Menu>
       </div>
       <div class="message-page-con message-view-con">
-        <Spin fix v-if="contentLoading" size="large"></Spin>
-        <div class="message-view-header">
-          <h2 class="message-view-title">{{ showingMsgItem.title }}</h2>
-          <time class="message-view-time">{{ showingMsgItem.create_time }}</time>
-        </div>
-        <div v-html="messageContent"></div>
+        <Spin fix v-if="loading" size="large"></Spin>
+        <GroupDetail :group="group"/>
       </div>
     </div>
   </Card>
 </template>
 
 <script>
+import GroupDetail from '~/components/GroupDetail.vue'
+import { getGroup } from '~/api/group'
 export default {
   name: 'message',
+  components: {
+    GroupDetail
+  },
   data() {
     return {
-      listLoading: true,
-      contentLoading: true,
-      currentMessageType: 'unread',
-      messageContent: '',
-      showingMsgItem: {}
+      loading: true,
+      currentMessageType: 'detail',
+      group: {
+        id: null,
+        name: null,
+        type: null,
+        userId: null,
+        status: null
+      },
+      groupId: null
     }
   },
   computed: {},
-  methods: {},
-  mounted() {}
+  methods: {
+    init() {
+      getGroup(this.groupId).then(res => {
+        this.group = res.data
+        this.loading = false
+      })
+    },
+    handleSelect(name) {
+      switch (name) {
+        case 'detail':
+          console.log('detail')
+          break
+        case 'users':
+          console.log('users')
+          break
+        case 'setting':
+          console.log('setting')
+          break
+      }
+    }
+  },
+  mounted() {
+    if (this.$route.params.id) {
+      let id = this.$route.params.id
+      this.groupId = id
+      this.init()
+    }
+  }
 }
 </script>
 
@@ -64,9 +93,7 @@ export default {
     }
     &.message-view-con {
       position: absolute;
-      left: 446px;
       top: 16px;
-      right: 16px;
       bottom: 16px;
       overflow: auto;
       padding: 12px 20px 0;

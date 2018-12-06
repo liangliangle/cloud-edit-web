@@ -123,3 +123,9 @@ export default {
   top: 16px;
 }
 </style>
+
+<style>
+div[type="button"] {
+  -webkit-appearance: initial !important;
+}
+</style>

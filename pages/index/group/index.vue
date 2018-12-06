@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import {getGroup, createGroup} from "~/api/group";
+  import {getGroupByUser, createGroup} from "~/api/group";
 
   export default {
     name: "group",
@@ -67,7 +67,7 @@
           var userJson =JSON.parse(user);
           userId=userJson.id
         }
-        getGroup(userId).then(res => {
+        getGroupByUser(userId).then(res => {
           console.log(res);
           this.list = res.data;
         });

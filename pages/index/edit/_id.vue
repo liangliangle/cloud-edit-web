@@ -13,7 +13,7 @@
         <div class="markdown-wrapper">
           <mavon-editor
             v-if="current.id"
-            style="height:800px;z-index:999"
+            style="height:800px;z-index:initial;-webkit-appearance: initial;"
             v-model="current.content"
           ></mavon-editor>
         </div>
@@ -48,7 +48,7 @@ export default {
       current: {
         content: '',
         groupId: null,
-        parentId: null,
+        parentId: 0,
         title: null,
         id: null
       },
@@ -62,19 +62,19 @@ export default {
       })
     },
     submit() {
+      if (!this.current.parentId) {
+        this.current.parentId = 0
+      }
       if (this.current.id) {
-        update(this.current)
-          .then(res => {
-            this.init()
-            this.$Message.info('修改成功')
-          })
-          
+        update(this.current).then(res => {
+          this.init()
+          this.$Message.info('修改成功')
+        })
       } else {
-        createEdit(this.current)
-          .then(res => {
-            this.init()
-            this.$Message.info('创建成功')
-          })
+        createEdit(this.current).then(res => {
+          this.init()
+          this.$Message.info('创建成功')
+        })
       }
     },
     cancel() {
@@ -96,6 +96,7 @@ export default {
         })
       } else {
         this.current.id = null
+        this.current.parentId = 0
       }
     },
     update() {
@@ -137,5 +138,6 @@ export default {
 
 .markdown-wrapper {
   padding-left: 10px;
+  -webkit-appearance: initial !important
 }
 </style>
