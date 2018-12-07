@@ -2,6 +2,7 @@
   <div class="demo-split left-split">
     <Split v-model="split1">
       <div slot="left">
+        <Spin fix v-if="listloading">加载中...</Spin>
         <div style="text-align:right">
           <Button type="primary" style="margin:5px;" v-if="current.id" @click="update">编辑</Button>
           <Button type="primary" style="margin:5px;" @click="append">新增</Button>
@@ -10,6 +11,7 @@
         <Tree :data="editList" @on-select-change="getDetail"></Tree>
       </div>
       <div slot="right">
+        <Spin fix v-if="contentloading">加载中...</Spin>
         <div class="markdown-wrapper">
           <mavon-editor
             v-if="current.id"
@@ -42,6 +44,8 @@ export default {
   components: { 'mavon-editor': mavonEditor.mavonEditor },
   data() {
     return {
+      contentloading:false,
+      listloading:true,
       split1: 0.3,
       groupId: null,
       editList: [],
@@ -57,8 +61,10 @@ export default {
   },
   methods: {
     init() {
+      this.listloading=true;
       getEditByGroup({ groupId: this.groupId }).then(res => {
         this.editList = res.data
+        this.listloading=false;
       })
     },
     submit() {
@@ -82,6 +88,7 @@ export default {
     },
     getDetail(data) {
       console.log(data)
+      this.contentloading=true;
       if (this.current.id) {
         update(this.current).then(res => {
           this.$Message.info('已保存')
@@ -93,6 +100,7 @@ export default {
           if (!this.current.content) {
             this.current.content = ''
           }
+          this.contentloading=false;
         })
       } else {
         this.current.id = null

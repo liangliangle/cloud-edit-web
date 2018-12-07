@@ -16,7 +16,10 @@
       </div>
       <div class="message-page-con message-view-con">
         <Spin fix v-if="loading" size="large"></Spin>
-        <GroupDetail :group="group"/>
+        <GroupDetail :group="group" v-if="currentMessageType == 'detail'"/>
+     <GroupSetting :group="group" v-if="currentMessageType == 'setting'"/>
+     <GroupUsers  v-if="currentMessageType == 'users'"/>
+     
       </div>
     </div>
   </Card>
@@ -24,16 +27,22 @@
 
 <script>
 import GroupDetail from '~/components/GroupDetail.vue'
-import { getGroup } from '~/api/group'
+import GroupUsers from '~/components/GroupUsers.vue'
+import GroupSetting from '~/components/GroupSetting.vue'
+
+import { getGroup ,getUserByGroup} from '~/api/group'
 export default {
-  name: 'message',
+  name: 'groupdetail',
   components: {
-    GroupDetail
+    GroupDetail,
+    GroupSetting,
+    GroupUsers
   },
   data() {
     return {
       loading: true,
       currentMessageType: 'detail',
+      userlist:[],
       group: {
         id: null,
         name: null,
@@ -50,20 +59,14 @@ export default {
       getGroup(this.groupId).then(res => {
         this.group = res.data
         this.loading = false
+      });
+      getUserByGroup(this.groupId).then(res=>{
+        this.userlist=res.data
       })
     },
     handleSelect(name) {
-      switch (name) {
-        case 'detail':
-          console.log('detail')
-          break
-        case 'users':
-          console.log('users')
-          break
-        case 'setting':
-          console.log('setting')
-          break
-      }
+
+     this.currentMessageType=name;
     }
   },
   mounted() {

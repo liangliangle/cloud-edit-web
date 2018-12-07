@@ -21,3 +21,9 @@ export const getGroup = groupId => {
     method: 'get'
   })
 }
+export const getUserByGroup = userId => {
+  return axios({
+    url: 'group/' + userId+'/user',
+    method: 'get'
+  })
+}
