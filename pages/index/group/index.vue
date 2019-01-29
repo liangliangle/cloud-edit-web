@@ -80,14 +80,13 @@ export default {
       this.model1 = true
     },
     submit() {
+      console.log(this.current)
       createGroup(this.current)
         .then(res => {
           this.$Message.info('创建成功')
           this.init()
         })
-        .catch(err => {
-          this.$Message.info('创建失败')
-        })
+       
     },
     cancel() {
       this.$Message.info('取消')
