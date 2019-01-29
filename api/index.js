@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Notice} from 'iview'
 
-axios.defaults.baseURL = 'http://localhost:7072/api'
+axios.defaults.baseURL = 'http://101.132.104.74:7072/api'
 axios.defaults.timeout = 10000
 // http request 拦截器
 axios.interceptors.request.use(

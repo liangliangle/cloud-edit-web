@@ -1,25 +1,27 @@
 <template>
   <Form ref="dto" :model="group" :rules="ruleValidate" :label-width="80">
-            <FormItem label="Name" prop="name">
-              <Input v-model="group.name" placeholder="名称"/>
-            </FormItem>
-            <FormItem label="类型" prop="type">
-          <Select v-model="group.type">
-            <Option value="私有">私有</Option>
-            <Option value="群组">群组</Option>
-          </Select>
-        </FormItem>
-            <FormItem >
-              <Button style="float:right" type="primary" >保存</Button>
-            </FormItem>
-          </Form>
+    <FormItem label="Name" prop="name">
+      <Input v-model="formValidate.name" placeholder="名称" />
+    </FormItem>
+    <FormItem label="类型" prop="type">
+      <Select v-model="formValidate.type">
+        <Option value="私有">私有</Option>
+        <Option value="群组">群组</Option>
+      </Select>
+    </FormItem>
+    <FormItem>
+      <Button style="float:right" type="primary" @click="handleSave">保存</Button>
+    </FormItem>
+  </Form>
 </template>
 <script>
-  export default {
-props:{group:Object},
-   data() {
+import { getGroupInfo, updateGroupInfo } from '~/api/group.js'
+export default {
+  props: { group: Object },
+  data() {
     return {
       formValidate: {
+        id: '',
         name: '',
         mail: '',
         gender: '',
@@ -51,14 +53,37 @@ props:{group:Object},
           },
           { type: 'url', message: 'Incorrect email format', trigger: 'blur' }
         ]
-      }
+      },
+      // 获取id
+      getParamsId: ''
     }
   },
   methods: {
-    
+    handleSave() {
+      updateGroupInfo(this.formValidate).then(data => {
+        console.log('==========defo', data)
+      })
+    },
+    getPeopleInfo() {
+      getGroupInfo(this.getParamsId).then(data => {
+        const dataInfo = data.data.dto
+        this.formValidate = {
+          ...dataInfo
+        }
+      })
+    }
+  },
+  computed: {
+    id() {
+      this.$route.params.id
+    }
   },
   mounted() {
-    this.formValidate=this.group
+    const paramsId = this.$route.params.id
+    this.getParamsId = paramsId
+
+    this.getPeopleInfo()
+    this.formValidate = this.group
   }
 }
 </script>

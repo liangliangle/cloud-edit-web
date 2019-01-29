@@ -1,7 +1,7 @@
 <template>
   <div>
     <Spin size="large" fix v-if="loading">
-     加载中...
+      加载中...
     </Spin>
     <div class="right-button">
       <Button type="primary" slot="extra" @click="add()" icon="md-add">新增</Button>
@@ -15,9 +15,9 @@
           </p>
           <div slot="extra">
             <Button type="text" shape="circle" label="small" icon="md-create" @click="detail(data)"></Button>
-            <Button type="text" label="small" shape="circle" icon="ios-trash-outline"/>
+            <Button type="text" label="small" shape="circle" icon="ios-trash-outline" />
           </div>
-          <a  @click="open(data)">
+          <a @click="open(data)">
             <Row type="flex" justify="center" align="middle" class="countto-page-row">{{data.name}}</Row>
           </a>
         </Card>
@@ -29,7 +29,7 @@
       </p>
       <Form :model="current" :label-width="80">
         <FormItem label="分区名称">
-          <Input v-model="current.name" placeholder="请输入名字"/>
+          <Input v-model="current.name" placeholder="请输入名字" />
         </FormItem>
         <FormItem label="类型">
           <Select v-model="current.type">
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     init() {
-     this.loading= true;
+      this.loading = true
       var userId = 1
       var user = localStorage.getItem('user')
       if (user) {
@@ -69,11 +69,15 @@ export default {
       }
       getGroupByUser(userId).then(res => {
         this.list = res.data
-        this.loading= false;
+        this.loading = false
       })
     },
     detail(data) {
-      this.$router.push({ path: '/group/' + data.id + '/detail' })
+      console.log('data :', data)
+      this.$router.push({
+        path: '/group/' + data.id + '/detail',
+        params: { id: data.id }
+      })
     },
     add() {
       this.current = {}
