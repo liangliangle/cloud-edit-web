@@ -15,8 +15,9 @@
         <div class="markdown-wrapper">
           <mavon-editor
             v-if="current.id"
-            style="height:800px;z-index:initial;-webkit-appearance: initial;"
-            v-model="current.content"
+            style="height:800px;-webkit-appearance: initial;"
+            v-model="current.content" 
+            :ishljs = "true"
           ></mavon-editor>
         </div>
       </div>

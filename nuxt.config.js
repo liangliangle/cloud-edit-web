@@ -32,12 +32,10 @@ loader:[
 
   ],
   proxy: {
-    '/api/': {target: 'http://localhost:7072', pathRewrite: {'^/api/': ''}}
+    
   },
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+   
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
@@ -48,5 +46,8 @@ loader:[
         })
       }
     }
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://101.132.104.74:7072/api'
   }
 }
