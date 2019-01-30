@@ -33,10 +33,9 @@ export const getUserByGroup = userId => {
  * 修改分组信息
  */
 export const updateGroupInfo = data => {
-  console.log('groupInfo ========:', data)
   return axios({
-    url: 'group/rename/' + data.id,
-    params: { newName: data.name },
+    url: 'group/' + data.id,
+    data: data,
     method: 'put'
   })
 }
@@ -49,5 +48,42 @@ export const getGroupInfo = info => {
   return axios({
     url: 'group/' + info,
     method: 'get'
+  })
+}
+
+/**
+ * 邀请小组
+ */
+
+export const AddGroutNumber = number => {
+  return axios({
+    url: 'group/user',
+    number: number,
+    method: 'post'
+  })
+}
+
+/**
+ * 按照邮箱或手机号查询用户
+ */
+
+export const searchMialOrPhone = mailOrPhone => {
+  console.log('mailOrPhone :', mailOrPhone)
+  return axios({
+    url: 'user/find',
+    params: { mailOrPhone: mailOrPhone },
+    method: 'get'
+  })
+}
+
+/**
+ * 邀请用户到小组
+ */
+
+export const addUserGroup = data => {
+  return axios({
+    method: 'post',
+    url: 'group/user',
+    data: data
   })
 }

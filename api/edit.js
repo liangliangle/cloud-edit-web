@@ -24,7 +24,6 @@ export const getEditById = data => {
 export const update = data => {
   return axios({
     url: 'edit/' + data.id,
-    params: { newName: data.name },
     method: 'put'
   })
 }

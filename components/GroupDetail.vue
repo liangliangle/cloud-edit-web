@@ -15,7 +15,7 @@
   </Form>
 </template>
 <script>
-import { getGroupInfo, updateGroupInfo } from '~/api/group.js'
+import { getGroupInfo, updateGroupInfo, AddGroutNumber } from '~/api/group.js'
 export default {
   props: { group: Object },
   data() {
@@ -59,16 +59,27 @@ export default {
     }
   },
   methods: {
+    /**
+     * 更新小组信息
+     */
+
     handleSave() {
       updateGroupInfo(this.formValidate).then(data => {
-        console.log('==========defo', data)
+        if (data.status === 200) {
+          this.$Message.success('更新成功')
+        } else {
+          this.$Message.error('更新失败')
+        }
       })
     },
+
+    /**
+     * 查询小组详情
+     */
     getPeopleInfo() {
       getGroupInfo(this.getParamsId).then(data => {
-        const dataInfo = data.data.dto
         this.formValidate = {
-          ...dataInfo
+          ...data.data
         }
       })
     }
@@ -81,7 +92,6 @@ export default {
   mounted() {
     const paramsId = this.$route.params.id
     this.getParamsId = paramsId
-
     this.getPeopleInfo()
     this.formValidate = this.group
   }
