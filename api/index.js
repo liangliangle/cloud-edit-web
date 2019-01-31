@@ -1,7 +1,9 @@
 ﻿import axios from 'axios';
 
 
-axios.defaults.baseURL =  process.env.baseUrl
+import { Notice } from 'iview';
+
+axios.defaults.baseURL = process.env.baseUrl
 axios.defaults.timeout = 10000
 // http request 拦截器
 axios.interceptors.request.use(
@@ -23,16 +25,16 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    console.log(error.response)
+    
     if (error.response) {
       if (error.response.status === 401) {
         // 授权失败， 登录失效或未登录
         // 清除用户与token信息
         localStorage.removeItem("token");
         location.replace("/login");
-      }else{
+      } else {
         if (error.response.data) {
-          Notice.error({desc: error.response.data.message})
+          Notice.error({ title: error.response.data.message });
         }
       }
     }
