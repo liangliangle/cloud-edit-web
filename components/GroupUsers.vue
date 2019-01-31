@@ -4,7 +4,7 @@
       <Button type="primary" slot="extra" icon="md-add" @click="handleAddUser">邀请</Button>
     </div>
     <Table :columns="titles" :data="list" style="width:100%"></Table>
-    <Modal v-model="modal1" title="邀请组员" @on-ok="ok" >
+    <Modal v-model="modal1" title="邀请组员" @on-ok="ok">
       <Form :model="formRight" label-position="right" :label-width="100">
         <FormItem label="用户名">
           <Row>
@@ -92,7 +92,7 @@ export default {
       // 默认隐藏
       hiddenDefault: false,
       newUser: null,
-      nameValue: '',
+      nameValue: ''
     }
   },
   methods: {
@@ -102,22 +102,18 @@ export default {
       })
     },
     handleAddUser() {
-      this.newUser=null;
-      this.nameValue='';
+      this.newUser = null
+      this.nameValue = ''
       this.modal1 = true
     },
     handleUserChange(e) {
       const name = e.target.value
-      console.log('name :', name)
       this.defaultValue = name
-     
     },
     handleClick() {
-     searchMialOrPhone(this.nameValue).then(res => {
-       this.newUser = res.data;
-       console.log(res);
-       console.log(this.newUser)
-      });
+      searchMialOrPhone(this.nameValue).then(res => {
+        this.newUser = res.data
+      })
     },
     remove(index) {
       this.$Modal.confirm({
@@ -125,14 +121,13 @@ export default {
         content: '移除' + this.list[index].userName + '?',
         onOk: () => {
           this.$Message.info('已移除')
-        },
-        
+        }
       })
     },
     ok() {
       const userData = {
         groupId: this.$route.params.id,
-        userId: this.newUser.id,
+        userId: this.newUser.id
       }
       addUserGroup(userData).then(res => {
         this.init()
