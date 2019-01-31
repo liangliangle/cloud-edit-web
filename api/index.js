@@ -23,7 +23,6 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    console.log(error.response)
     if (error.response) {
       if (error.response.status === 401) {
         // 授权失败， 登录失效或未登录

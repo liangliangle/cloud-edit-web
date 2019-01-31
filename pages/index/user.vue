@@ -1,24 +1,28 @@
 <template>
   <Row :gutter="32">
     <Col span="8" class="demo-tabs-style">
-      <Tabs type="card">
-        <TabPane label="个人信息">
-          <UserDetail />
-        </TabPane>
-        <TabPane label="安全">标签二的内容</TabPane>
-        <TabPane label="设置">标签三的内容</TabPane>
-      </Tabs>
+    <Tabs type="card">
+      <TabPane label="个人信息">
+        <UserDetail />
+      </TabPane>
+      <TabPane label="修改密码">
+        <update-password />
+      </TabPane>
+      <TabPane label="设置">标签三的内容</TabPane>
+    </Tabs>
     </Col>
   </Row>
 </template>
- 
+
 </template>
 <script>
 import UserDetail from '~/components/UserDetail.vue'
+import UpdatePassword from '~/components/UpdatePassword.vue'
 export default {
   components: {
-      UserDetail
-    },
+    UserDetail,
+    UpdatePassword
+  },
   data() {
     return {
       formValidate: {

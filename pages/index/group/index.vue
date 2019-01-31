@@ -73,7 +73,6 @@ export default {
       })
     },
     detail(data) {
-      console.log('data :', data)
       this.$router.push({
         path: '/group/' + data.id + '/detail',
         params: { id: data.id }
@@ -84,19 +83,17 @@ export default {
       this.model1 = true
     },
     submit() {
-      console.log(this.current)
       createGroup(this.current)
         .then(res => {
           this.$Message.info('创建成功')
           this.init()
         })
-       
+
     },
     cancel() {
       this.$Message.info('取消')
     },
     open(data) {
-      console.log(data)
       this.$router.push({ path: '/edit/' + data.id })
     }
   },

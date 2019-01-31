@@ -68,7 +68,6 @@ export const AddGroutNumber = number => {
  */
 
 export const searchMialOrPhone = mailOrPhone => {
-  console.log('mailOrPhone :', mailOrPhone)
   return axios({
     url: 'user/find',
     params: { mailOrPhone: mailOrPhone },
