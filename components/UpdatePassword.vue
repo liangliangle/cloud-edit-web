@@ -1,10 +1,10 @@
 <template>
   <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
     <FormItem label="旧密码" prop="oldPassword">
-      <Input v-model="formValidate.oldPassword" placeholder="请输入旧密码" />
+      <Input v-model="formValidate.oldPassword" placeholder="请输入旧密码" style="width:400px;" />
     </FormItem>
     <FormItem label="新密码" prop="newPassword">
-      <Input v-model="formValidate.newPassword" placeholder="请输入新密码" />
+      <Input v-model="formValidate.newPassword" placeholder="请输入新密码" style="width:400px;" />
     </FormItem>
     <FormItem>
       <Button style="text-align:center;" type="primary" @click="handleSubmit('formValidate')">保存</Button>
