@@ -4,28 +4,28 @@
       <Button type="primary" slot="extra" icon="md-add" @click="handleAddUser">邀请</Button>
     </div>
     <Table :columns="titles" :data="list" style="width:100%"></Table>
-    <Modal v-model="modal1" title="邀请组员" @on-ok="ok" @on-cancel="cancel">
+    <Modal v-model="modal1" title="邀请组员" @on-ok="ok" >
       <Form :model="formRight" label-position="right" :label-width="100">
         <FormItem label="用户名">
           <Row>
             <Col :span="16">
-            <Input style="width:250px;" @on-change="handleUserChange" />
+            <Input style="width:250px;" v-model="nameValue" />
             </Col>
             <Col :span="8" <Icon type="md-locate" btn @click="handleClick" />
           </Row>
         </FormItem>
-        <div v-if="hiddenDefault">
+        <div v-if="newUser">
           <FormItem label="图片">
             <Row>
               <Col :span="12">
-              <img :src="addGroup.img" class="imgSet" />
+              <img :src="newUser.img" class="imgSet" />
               </Col>
             </Row>
           </FormItem>
           <FormItem label="手机号">
             <Row>
               <Col>
-              <Input v-model="addGroup.phone" style="width:250px;" />
+              <Input v-model="newUser.phone" style="width:250px;" />
               </Col>
             </Row>
           </FormItem>
@@ -42,14 +42,6 @@ import {
   searchMialOrPhone,
   addUserGroup
 } from '~/api/group'
-const addGroup = {
-  id: '',
-  userName: '',
-  groupId: '',
-  userId: '',
-  img: '',
-  phone: ''
-}
 export default {
   data() {
     return {
@@ -99,9 +91,8 @@ export default {
       modal1: false,
       // 默认隐藏
       hiddenDefault: false,
-      defaultValue: '',
+      newUser: null,
       nameValue: '',
-      storeUserInfo: []
     }
   },
   methods: {
@@ -111,27 +102,22 @@ export default {
       })
     },
     handleAddUser() {
+      this.newUser=null;
+      this.nameValue='';
       this.modal1 = true
     },
     handleUserChange(e) {
       const name = e.target.value
       console.log('name :', name)
       this.defaultValue = name
-      searchMialOrPhone(this.defaultValue).then(data => {
-        console.log('data _____:', data)
-        this.nameValue = data
-        this.addGroup = {
-          ...data.data
-        }
-        this.storeUserInfo = data.data
-      })
+     
     },
     handleClick() {
-      if (this.defaultValue !== '') {
-        this.hiddenDefault = true
-      } else {
-        console.log('---暂无数据')
-      }
+     searchMialOrPhone(this.nameValue).then(res => {
+       this.newUser = res.data;
+       console.log(res);
+       console.log(this.newUser)
+      });
     },
     remove(index) {
       this.$Modal.confirm({
@@ -140,26 +126,17 @@ export default {
         onOk: () => {
           this.$Message.info('已移除')
         },
-        onCancel: () => {
-          this.$Message.info('操作取消')
-        }
+        
       })
     },
     ok() {
-      this.$Message.info('Clicked ok')
       const userData = {
-        img: this.addGroup.img,
         groupId: this.$route.params.id,
-        userId: this.addGroup.id,
-        userName: this.defaultValue
+        userId: this.newUser.id,
       }
-      console.log('userData :', userData)
-      addUserGroup(userData).then(data => {
-        console.log('data的值为 :', data)
+      addUserGroup(userData).then(res => {
+        this.init()
       })
-    },
-    cancel() {
-      this.$Message.info('Clicked cancel')
     }
   },
   mounted() {
