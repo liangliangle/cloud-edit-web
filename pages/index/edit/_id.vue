@@ -16,8 +16,10 @@
           <mavon-editor
             v-if="current.id"
             style="height:800px;-webkit-appearance: initial;"
-            v-model="current.content" 
-            :ishljs = "true"
+            v-model="current.content"
+            :ishljs="true"
+            ref="md"
+            @imgAdd="$imgAdd"
           ></mavon-editor>
         </div>
       </div>
@@ -39,14 +41,15 @@
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { getEditByGroup, createEdit, getEditById, update } from '~/api/edit'
+import { uploadFile } from '~/api/file'
 
 export default {
   name: 'edit',
   components: { 'mavon-editor': mavonEditor.mavonEditor },
   data() {
     return {
-      contentloading:false,
-      listloading:true,
+      contentloading: false,
+      listloading: true,
       split1: 0.3,
       groupId: null,
       editList: [],
@@ -57,15 +60,16 @@ export default {
         title: null,
         id: null
       },
+      currentContent: '',
       model1: false
     }
   },
   methods: {
     init() {
-      this.listloading=true;
+      this.listloading = true
       getEditByGroup({ groupId: this.groupId }).then(res => {
         this.editList = res.data
-        this.listloading=false;
+        this.listloading = false
       })
     },
     submit() {
@@ -88,12 +92,13 @@ export default {
       this.$Message.info('取消')
     },
     getDetail(data) {
-      console.log(data)
-      this.contentloading=true;
-      if (this.current.id) {
-        update(this.current).then(res => {
-          this.$Message.info('已保存')
-        })
+      if (this.currentContent != this.current.content) {
+        this.contentloading = true
+        if (this.current.id) {
+          update(this.current).then(res => {
+            this.$Message.info('已保存')
+          })
+        }
       }
       if (data.length) {
         getEditById({ id: data[0].id }).then(res => {
@@ -101,7 +106,8 @@ export default {
           if (!this.current.content) {
             this.current.content = ''
           }
-          this.contentloading=false;
+          this.currentContent = this.current.content
+          this.contentloading = false
         })
       } else {
         this.current.id = null
@@ -123,6 +129,15 @@ export default {
       const parent = root.find(el => el.nodeKey === parentKey).node
       const index = parent.children.indexOf(data)
       parent.children.splice(index, 1)
+    },
+    $imgAdd(pos, $file) {
+      console.log($file)
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData()
+      formdata.append('file', $file)
+      uploadFile(formdata).then(req => {
+        this.$refs.md.$img2Url(pos, req.data)
+      })
     }
   },
   mounted() {
@@ -147,6 +162,6 @@ export default {
 
 .markdown-wrapper {
   padding-left: 10px;
-  -webkit-appearance: initial !important
+  -webkit-appearance: initial !important;
 }
 </style>

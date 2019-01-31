@@ -1,5 +1,4 @@
 ﻿import axios from 'axios';
-import {Notice} from 'iview'
 
 
 axios.defaults.baseURL =  process.env.baseUrl
